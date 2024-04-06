@@ -7,6 +7,7 @@ spring:
   main:
     allow-circular-references: true
   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: ${sky.datasource.driver-class-name}
       url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
@@ -20,6 +21,9 @@ mybatis:
   configuration:
     #开启驼峰命名
     map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+
+
 
 logging:
   level:
@@ -37,3 +41,4 @@ sky:
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+

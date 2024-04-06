@@ -39,6 +39,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 通过knife4j生成接口文档
+     * 固定代码，没有必要手敲记住有这个玩意就行
      * @return
      */
     @Bean
