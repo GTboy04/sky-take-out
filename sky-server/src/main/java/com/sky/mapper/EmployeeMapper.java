@@ -1,7 +1,9 @@
 package com.sky.mapper;
 
+import com.sky.annotation.AutoFill;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
+import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -24,6 +26,7 @@ public interface EmployeeMapper {
     void update(Employee employee);
 
 
+    @AutoFill(OperationType.INSERT)
     void insertEmployee(Employee employee);
 
     List<Employee> selectPage(EmployeePageQueryDTO employeePageQueryDTO);
