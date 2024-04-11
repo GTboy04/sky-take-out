@@ -6,3 +6,10 @@ sky:
     database: sky_take_out
     username: root
     password: 123456
+  alioss:
+    endpoint: oss-cn-nanjing.aliyuncs.com
+    access-key-id: LTAI5tDZAMoj5t7f65yBudoJ
+    access-key-secret: c0PQ2555nyYQwDZtyfYoGHeEnEdKk3
+    bucket-name: gtboy-04
+
+

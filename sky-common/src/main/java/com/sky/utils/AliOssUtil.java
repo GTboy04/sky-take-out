@@ -10,8 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.ByteArrayInputStream;
 
 @Data
-@AllArgsConstructor
+@AllArgsConstructor //lombok的注解，自动添加所有参数的构造方法
 @Slf4j
+/*
+* 为什么没有在这里帮把AliOssUtil加入组件，而是在配置类中把AliOssUtil加入组件中呢
+* 答：因为该类中成员变量并没有进行初始化，如果直接在该类上加上注解，spring帮我们创建的对象就是一个
+* 成员变量为空的一个实体对象，导致不能使用
+* */
 public class AliOssUtil {
 
     private String endpoint;
