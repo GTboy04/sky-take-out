@@ -6,6 +6,7 @@ import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,19 @@ public class DishController {
         log.info("传入idList：{}",ids);
         //自己处理也可以交给这个处理也是可以交给spring帮我们去处理的
         Result result = dishService.deleteBatch(ids);
+        return result;
+    }
+
+    @GetMapping("{id}")
+    public Result<DishVO> getDishById(@PathVariable Long id){
+        return dishService.selectDishById(id);
+    }
+
+    @PutMapping
+    @ApiOperation("修改菜品")
+    public Result updateDishWithFlavor(@RequestBody DishDTO dishDTO){
+        log.info("修改菜品：{}",dishDTO);
+        Result result = dishService.updateDishWithFlavor(dishDTO);
         return result;
     }
 
