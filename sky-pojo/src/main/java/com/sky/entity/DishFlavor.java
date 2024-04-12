@@ -16,6 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class DishFlavor implements Serializable {
 
+    //实现序列化需要使用
     private static final long serialVersionUID = 1L;
 
     private Long id;
