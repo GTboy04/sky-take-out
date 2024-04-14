@@ -18,4 +18,6 @@ public interface DishService {
     Result updateDishWithFlavor(DishDTO dishDTO);
 
     Result<DishVO> selectDishById(Long id);
+
+    Result SwitchDishAndSetMealStatus(Integer status, Long dishId);
 }

@@ -2,7 +2,6 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
-import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -75,4 +74,10 @@ public class DishController {
         return result;
     }
 
+    @PostMapping("status/{status}")
+    @ApiOperation("菜品起售、停售")
+    public Result switchStatus(@PathVariable Integer status, @RequestParam("id") Long dishId){
+        log.info("菜品的起售与停售{},{}",status,dishId);
+        return dishService.SwitchDishAndSetMealStatus(status,dishId);
+    }
 }

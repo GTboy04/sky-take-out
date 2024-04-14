@@ -8,10 +8,12 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
+import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -44,6 +46,9 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private SetMealDishMapper setMealDishMapper;
+
+    @Autowired
+    private SetMealMapper setMealMapper;
 
     /*
      * 其实我感觉加了事务之后不用再去进行判断影响数据行数了，因为如果影响行数为0，自然会进行回归
@@ -167,6 +172,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 查询Dish表和Dish_Flavor表
+     *
      * @param id
      * @return
      */
@@ -174,12 +180,41 @@ public class DishServiceImpl implements DishService {
     public Result<DishVO> selectDishById(Long id) {
         DishVO dishVO = new DishVO();
         Dish dish = dishMapper.getDishById(id);
-        BeanUtils.copyProperties(dish,dishVO);
+        BeanUtils.copyProperties(dish, dishVO);
 
         List<DishFlavor> dishFlavors = dishFlavorMapper.selectFlavorByDishId(id);
 
         dishVO.setFlavors(dishFlavors);
 
         return Result.success(dishVO);
+    }
+
+    @Transactional //涉及到多张表
+    @Override
+    public Result SwitchDishAndSetMealStatus(Integer status, Long dishId) {
+        Dish dish = new Dish();
+        dish.setId(dishId);
+        dish.setStatus(status);
+        log.info("菜品{}",dish);
+        //起售与停售菜品
+        dishMapper.update(dish);
+
+
+        //只有当菜品停售的时候才需要我去停售套餐，而菜品起售的时候不需要任何的操作
+        // 通过dishId去查SetmealDish中的SetmealId，然后去修改套餐的status
+
+        if (status.equals(StatusConstant.DISABLE)) {
+            Long SetmealId = setMealDishMapper.findSetmealIdByDishId(dishId);
+            //当去数据库中插找数据的时候，要进行判断
+            if (SetmealId != null) {
+                Setmeal setmeal = new Setmeal();
+                setmeal.setId(SetmealId);
+                setmeal.setStatus(status);
+                log.info("套餐{}",setmeal);
+                setMealMapper.update(setmeal);
+                return Result.success();
+            }
+        }
+        return Result.success();
     }
 }
