@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -204,14 +205,15 @@ public class DishServiceImpl implements DishService {
         // 通过dishId去查SetmealDish中的SetmealId，然后去修改套餐的status
 
         if (status.equals(StatusConstant.DISABLE)) {
-            Long SetmealId = setMealDishMapper.findSetmealIdByDishId(dishId);
+            List<Long> SetmealId = setMealDishMapper.findSetmealIdByDishId(dishId);
             //当去数据库中插找数据的时候，要进行判断
-            if (SetmealId != null) {
-                Setmeal setmeal = new Setmeal();
-                setmeal.setId(SetmealId);
-                setmeal.setStatus(status);
-                log.info("套餐{}",setmeal);
-                setMealMapper.update(setmeal);
+            if (SetmealId != null&&!SetmealId.isEmpty()) {
+                for (Long l : SetmealId) {
+                    Setmeal setmeal = new Setmeal();
+                    setmeal.setId(l);
+                    setmeal.setStatus(status);
+                    setMealMapper.update(setmeal);
+                }
                 return Result.success();
             }
         }
